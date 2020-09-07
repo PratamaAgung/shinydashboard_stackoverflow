@@ -10,6 +10,26 @@
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
 
-    
+    output$plot_trend <- renderPlotly({
+        p1 <- master_data_agg_daily %>% 
+            filter(date(date_only) > input$dates[1] & date(date_only) <= input$dates[2]) %>% 
+            ggplot(aes(date_only, NumberOfQuestion, color = quality, group = quality,
+                       text = glue("Date : {date_only}
+                         Quality : {quality}
+                         Question : {number(NumberOfQuestion, big.mark = ',', accuracy = 1)}")
+            )) +
+            scale_y_continuous(labels = number_format(big.mark = ",")) +
+            scale_x_date(date_breaks = "1 month",
+                         labels = date_format(format = "%b")
+            ) +
+            geom_line() +
+            labs(title = "",
+                 x = NULL,
+                 y = "Number of Questions",
+                 color = "quality"
+            )
+        
+        ggplotly(p1, tooltip = "text") 
+    })    
 
 })
