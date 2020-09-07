@@ -47,15 +47,18 @@ shinyUI(
                         h2('Tag Question Quality'),
                         
                         selectInput(inputId = "tag_select",
-                            label = "Select Tags",
+                            label = "You can choose the tags to be compared",
                             multiple = T, 
                             selected = c("java", "python"),
                             choices = unique(tags_quality$tags_split)
                         ),
+                        
+                        plotlyOutput(outputId = 'tag_quality'),
                 ),
                 tabItem(tabName = 'question',
                         
                         h2("StackOverflow Question Data"),
+                        h4("Here are the list of some questions in the StackOverflow"),
                         
                         DT::dataTableOutput(outputId = "master_data")
                         

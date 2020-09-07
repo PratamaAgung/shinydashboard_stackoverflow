@@ -20,6 +20,7 @@ master_data <-
     rename(quality = Y) %>%
     mutate(date_only = date(CreationDate))
 
+# Aggregate data into daily basis to be shown in trend plot
 master_data_agg_daily <- 
   master_data %>%
     group_by(date_only, quality) %>%
@@ -28,13 +29,16 @@ master_data_agg_daily <-
     ) %>%
     ungroup()
 
+# Creating tag-quality data format
+## Explode the question with multiple tags into multiple row
 master_data_exploded_tags <-
   master_data %>%
     select('quality', 'CreationDate', 'Tags') %>%
     mutate(tags_split = strsplit(substr(Tags, 2, nchar(Tags)-1), "><")) %>%
     unnest(c(tags_split))
 
-tags_quality <- 
+## Aggregate data on each tag quality
+tags_quality_data <- 
   master_data_exploded_tags %>%
     group_by(tags_split, quality) %>%
     summarise(

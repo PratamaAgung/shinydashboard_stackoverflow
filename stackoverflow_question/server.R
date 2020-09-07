@@ -13,7 +13,7 @@ shinyServer(function(input, output) {
     output$plot_trend <- renderPlotly({
         p1 <- master_data_agg_daily %>% 
             filter(date(date_only) > input$dates[1] & date(date_only) <= input$dates[2]) %>% 
-            ggplot(aes(date_only, NumberOfQuestion, color = quality, group = quality,
+            ggplot(mapping = aes(date_only, NumberOfQuestion, color = quality, group = quality,
                        text = glue("Date : {date_only}
                          Quality : {quality}
                          Question : {number(NumberOfQuestion, big.mark = ',', accuracy = 1)}")
@@ -38,6 +38,23 @@ shinyServer(function(input, output) {
             select(Title, Tags, CreationDate, quality) %>%
             mutate(CreationDate = format(CreationDate, '%d %b %Y'))
         
+    })
+    
+    output$tag_quality <- renderPlotly({
+        p2 <- tags_quality_data %>%
+            filter(tags_split %in% input$tag_select) %>%
+            plot_ly(x = ~tags_split, y = ~NumberOfQuestion, type='bar', 
+                    name = ~quality,
+                    text = ~quality,
+                    hovertemplate = paste('<b>Tag: %{x}</b>q',
+                                          '<br><i>Quality</i>: %{text}<br>',
+                                          '<b>%{y:,}</b>')
+                    ) %>%
+            layout(yaxis = list(title = 'Number Of Question'), 
+                   xaxis = list(title = 'Tag Name'),
+                   barmode = 'stack')
+        
+        p2
     })
 
 })
