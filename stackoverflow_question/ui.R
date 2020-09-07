@@ -16,8 +16,7 @@ shinyUI(
             
             sidebarMenu(
                 menuItem(text = "Trend", icon = icon("chart-line"), tabName = 'trend'),
-                menuItem(text = "Quality", icon = icon("clipboard-check"), tabName = 'quality'),
-                menuItem(text = "Tag Correlation", icon = icon("project-diagram"), tabName = 'correlation'),
+                menuItem(text = "Tag Quality", icon = icon("clipboard-check"), tabName = 'quality'),
                 menuItem(text = "Questions", icon = icon("question-circle"), tabName = 'question')
             )
             
@@ -26,21 +25,41 @@ shinyUI(
             
             tabItems(
                 tabItem(tabName = 'trend',
-                        h2("Number of Questions asked in StackOverflow"),
+                        h2('Number of Questions asked in StackOverflow'),
+                        h4('Developer are using StackOverflow intensively during their works. Let\'s see how they behave!'),
                         
                         dateRangeInput("dates", 
                                        label = h5("Set the date range here"), 
                                        start = '2016-01-01',
-                                       end = '2016-03-31',
+                                       end = '2016-02-28',
                                        min = '2016-01-01',
                                        max = '2020-12-31',
                                        ),
                         
-                        plotlyOutput(outputId = 'plot_trend')
+                        plotlyOutput(outputId = 'plot_trend'),
+                        
+                        h5('Notes:'),
+                        p('HQ: High-quality posts with 30+ score and without a single edit'),
+                        p('LQ_EDIT: Low-quality posts with a negative score and with multiple community edits. However, they still remain open after the edits'),
+                        p('LQ_CLOSE: Low-quality posts that were closed by the community without a single edit'),
                 ),
-                tabItem(tabName = 'quality'),
-                tabItem(tabName = 'correlation'),
-                tabItem(tabName = 'question')
+                tabItem(tabName = 'quality',
+                        h2('Tag Question Quality'),
+                        
+                        selectInput(inputId = "tag_select",
+                            label = "Select Tags",
+                            multiple = T, 
+                            selected = c("java", "python"),
+                            choices = unique(tags_quality$tags_split)
+                        ),
+                ),
+                tabItem(tabName = 'question',
+                        
+                        h2("StackOverflow Question Data"),
+                        
+                        DT::dataTableOutput(outputId = "master_data")
+                        
+                )
             )
             
         )

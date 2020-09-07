@@ -30,6 +30,14 @@ shinyServer(function(input, output) {
             )
         
         ggplotly(p1, tooltip = "text") 
-    })    
+    })
+    
+    output$master_data <- DT::renderDataTable({
+
+        master_data %>%
+            select(Title, Tags, CreationDate, quality) %>%
+            mutate(CreationDate = format(CreationDate, '%d %b %Y'))
+        
+    })
 
 })
