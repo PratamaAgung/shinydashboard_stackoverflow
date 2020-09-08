@@ -44,6 +44,15 @@ tags_quality_data <-
     summarise(
       NumberOfQuestion = n()
     ) %>%
-    ungroup()
+    ungroup() %>%
+    filter(
+      NumberOfQuestion > 50
+    )
 
+## Set dictionary for color group
+color.group <- c(
+  HQ = '#14b1ab',
+  LQ_EDIT = '#f9d56e',
+  LQ_CLOSE = '#e8505b'
+)
 

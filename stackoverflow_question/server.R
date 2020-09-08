@@ -23,6 +23,7 @@ shinyServer(function(input, output) {
                          labels = date_format(format = "%b")
             ) +
             geom_line() +
+            scale_color_manual(values=color.group) +
             labs(title = "",
                  x = NULL,
                  y = "Number of Questions",
@@ -43,13 +44,31 @@ shinyServer(function(input, output) {
     output$tag_quality <- renderPlotly({
         p2 <- tags_quality_data %>%
             filter(tags_split %in% input$tag_select) %>%
-            plot_ly(x = ~tags_split, y = ~NumberOfQuestion, type='bar', 
-                    name = ~quality,
-                    text = ~quality,
+            spread(quality, NumberOfQuestion) %>%
+            plot_ly(x = ~tags_split, y = ~LQ_CLOSE, type='bar', 
+                    name = 'LQ_CLOSE',
+                    text = 'LQ_CLOSE',
+                    marker = list(color = color.group['LQ_CLOSE']),
                     hovertemplate = paste('<b>Tag: %{x}</b>q',
                                           '<br><i>Quality</i>: %{text}<br>',
                                           '<b>%{y:,}</b>')
                     ) %>%
+            add_trace(y = ~LQ_EDIT, 
+                      name = 'LQ_EDIT', 
+                      marker = list(color = color.group['LQ_EDIT']),
+                      text = 'LQ_EDIT',
+                      hovertemplate = paste('<b>Tag: %{x}</b>q',
+                                            '<br><i>Quality</i>: %{text}<br>',
+                                            '<b>%{y:,}</b>')
+                      ) %>%
+            add_trace(y = ~HQ, 
+                      name = 'HQ', 
+                      marker = list(color = color.group['HQ']),
+                      text = 'HQ',
+                      hovertemplate = paste('<b>Tag: %{x}</b>q',
+                                            '<br><i>Quality</i>: %{text}<br>',
+                                            '<b>%{y:,}</b>')
+                      ) %>%
             layout(yaxis = list(title = 'Number Of Question'), 
                    xaxis = list(title = 'Tag Name'),
                    barmode = 'stack')

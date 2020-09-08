@@ -9,7 +9,7 @@
 
 # Define UI for application that draws a histogram
 shinyUI(
-    dashboardPage(
+    dashboardPage(skin = 'yellow',
         
         dashboardHeader(title = 'StackQuestion'),
         dashboardSidebar(
@@ -50,7 +50,7 @@ shinyUI(
                             label = "You can choose the tags to be compared",
                             multiple = T, 
                             selected = c("java", "python"),
-                            choices = unique(tags_quality$tags_split)
+                            choices = unique(tags_quality_data$tags_split)
                         ),
                         
                         plotlyOutput(outputId = 'tag_quality'),
