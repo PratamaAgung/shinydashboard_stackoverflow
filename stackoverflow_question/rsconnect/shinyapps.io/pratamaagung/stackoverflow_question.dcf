@@ -1,0 +1,12 @@
+name: stackoverflow_question
+title: stackoverflow_question
+username:
+account: pratamaagung
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 2767120
+bundleId: 3604272
+url: https://pratamaagung.shinyapps.io/stackoverflow_question/
+when: 1599526346.9214
+asMultiple: FALSE
+asStatic: FALSE

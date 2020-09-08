@@ -1,0 +1,2 @@
+Link to shinyapps deployment:
+https://pratamaagung.shinyapps.io/stackoverflow_question/

@@ -27,6 +27,7 @@ shinyUI(
                 tabItem(tabName = 'trend',
                         h2('Number of Questions asked in StackOverflow'),
                         h4('Developer are using StackOverflow intensively during their works. Let\'s see how they behave!'),
+                        p(em('Data source: https://www.kaggle.com/imoore/60k-stack-overflow-questions-with-quality-rate')),
                         
                         dateRangeInput("dates", 
                                        label = h5("Set the date range here"), 
@@ -54,6 +55,8 @@ shinyUI(
                         ),
                         
                         plotlyOutput(outputId = 'tag_quality'),
+                        
+                        p(em('*Note: Only significant tags are shown'))
                 ),
                 tabItem(tabName = 'question',
                         
